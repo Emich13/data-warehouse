@@ -8,6 +8,7 @@ const config = require('./config')
 var express = require('express');
 var app = express();
 app.use(express.static('publica'));
+app.use(express.json())
 
 //npm install body-parser
 var bodyParser = require('body-parser');
@@ -32,49 +33,33 @@ var expressJwt = require('express-jwt');
 //Protegemos todo menos el /login
 app.use(expressJwt({ secret: process.env.jwtClave, algorithms: ['HS256'] }).unless({ path: ["/login", "/registro"] }));
 
+
 //-------------------------------------Usuarios-----------------------------------//
 
 //Endpoints//
-
-app.post('/registro', registro) //Registrar nuevo usuario
 app.post('/login', login) //Login usuario existente
 
 
 //Queries usuarios
-function registro(req, res) {
+ function login(req, res) {
     var data = req.body;
-    if (!data.usuario || !data.nombre || !data.apellido || !data.correo || !data.telefono || !data.direccion_de_envio || !data.pass) {
-        res.status(405).send(`No está permitido dejar campos vacios.
-            Por favor completa todos los campos y registrate nuevamente!`)
-    } else {
-        sequelize.query('INSERT INTO usuarios (usuario, nombre, apellido, correo, telefono, direccion_de_envio, pass) VALUES (?,?,?,?,?,?,?)',
-            { replacements: [data.usuario, data.nombre, data.apellido, data.correo, data.telefono, data.direccion_de_envio, data.pass] })
-            .then(function () {
-                res.status(201).send(`${data.nombre}, creaste tu usuario con exito!`)
-            }).catch(function () {
-                res.status(400).send("Verifica que hayas ingresado todos los datos. Intentalo nuevamente")
-            });
-    }
-}
-
-async function login(req, res) {
-    var data = req.body;
-    await sequelize.query('SELECT * FROM usuarios WHERE usuario=? AND pass=?',
-        { replacements: [data.usuario, data.pass], type: sequelize.QueryTypes.SELECT })
+     sequelize.query('SELECT * FROM usuarios WHERE mail=? AND pass=?',
+        { replacements: [data.mail, data.pass], type: sequelize.QueryTypes.SELECT })
         .then(function (resultado) {
-            if (data.usuario == resultado[0].usuario || data.pass == resultado[0].pass) {
-
+            
+            if (data.mail == resultado[0].mail || data.pass == resultado[0].pass) {
+                
                 var token = jwt.sign({
-                    usuario: data.usuario,
-                    rol: resultado[0].rol,
-                    direccion: resultado[0].direccion_de_envio
+                    mail: data.mail,
+                    perfil: resultado[0].perfil,
                 }, process.env.jwtClave);
 
+                console.log(token)
                 res.status(200).send(token)
                 return
             }
         }).catch(function () {
-            res.status(400).send("Usuario y/o pass son incorrectos o vacios. Si no tiene una cuenta debe registrarse")
+            res.status(401).send("Mail y/o pass son incorrectos o vacios")
         })
 }
 

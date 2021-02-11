@@ -17,7 +17,7 @@
         <!--logo-->
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"
+                <img src="" alt="" width="30" height="24"
                     class="d-inline-block align-top">
                 Data Warehouse
             </a>
@@ -59,22 +59,23 @@
             <div>
                 <label for="exampleFormControlInput1" class=" py-5">Login</label>
             </div>
-            <form class="row g-3">
+            <form id="form1" class="row g-3">
                 <div class="col-auto">
                     <label for="staticEmail2" class="visually-hidden">Email</label>
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2"
-                        value="email@example.com">
+                    <input type="text" name="mail" class="form-control-plaintext" id="staticEmail2"
+                        placeholder="email@example.com">
                 </div>
 
                 <div class="col-auto">
                     <label for="inputPassword2" class="visually-hidden">Password</label>
-                    <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                    <input type="password" name="pass" class="form-control" id="inputPassword2" placeholder="Password">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+                    <button type="submit" id="submit_login" class="btn btn-primary mb-3">Confirm identity</button>
                 </div>
             </form>
         </div>
+        <div id="bienvenida"></div>
         <!--seccion contactos-->
 
         <!--Label + boton agregar contactos-->
@@ -271,8 +272,8 @@
     </main>
     <div class="prueba"></div>
 <!-- Scripts -->
-<script src="js/users.js"></script>
-<script src="js/login.js"></script>
+
+<script src="../front/js/login.js"></script>
 </body>
 
 </html>
