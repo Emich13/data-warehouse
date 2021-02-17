@@ -17,7 +17,7 @@ async function submit_login() {
     var mail = document.getElementById('staticEmail2').value
     var pass = document.getElementById('inputPassword2').value;
     const data = { mail, pass };
-    console.log(data)
+    //console.log(data)
 
      fetch(url, {
         method: 'POST',
@@ -27,8 +27,10 @@ async function submit_login() {
         credentials: 'omit',
         body: JSON.stringify(data)
     })
-    //.then(response => response.json())
-        .then(response=> console.log(response))
+    .then(response => response.text())
+        .then(response=> 
+            sessionStorage.setItem('accessToken', response))
+            window.location.href='file:///C:/Users/Emich/Google%20Drive/Acamica/ENTREGAS/4TO%20PROYECTO/data_warehouse/docs/bienvenido.html'
             
 }
 submit_login()

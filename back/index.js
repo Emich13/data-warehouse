@@ -10,6 +10,9 @@ var app = express();
 app.use(express.static('publica'));
 app.use(express.json())
 
+//npm install ejs
+const expressLayouts = require('express-ejs-layouts')
+
 //npm install body-parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -54,7 +57,7 @@ app.post('/login', login) //Login usuario existente
                     perfil: resultado[0].perfil,
                 }, process.env.jwtClave);
 
-                console.log(token)
+                //console.log(token)
                 res.status(200).send(token)
                 return
             }
